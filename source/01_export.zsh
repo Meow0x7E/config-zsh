@@ -1,8 +1,8 @@
 export PATH="${PATH}:${HOME}/.cargo/bin/"
 
-#export ANDROID_HOME="${HOME}/Android/Sdk/"
+export ANDROID_HOME="${HOME}/Android/Sdk/"
 
-export HISTFILE=${HOME}/.cache/zsh_histfile
+export HISTFILE=${ZSH_CONFIG_HOME}/.histfile
 export HISTSIZE=8192
 export SAVEHIST=8192
 
