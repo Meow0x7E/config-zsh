@@ -1,10 +1,14 @@
-export PATH="${PATH}:${HOME}/.cargo/bin/"
+#!/usr/bin/zsh
 
-export ANDROID_HOME="${HOME}/Android/Sdk/"
+[[ "${HOME}/.cargo/bin/" ]] && export PATH="${PATH}:${HOME}/.cargo/bin/"
 
-export HISTFILE=${ZSH_CONFIG_HOME}/.histfile
-export HISTSIZE=8192
-export SAVEHIST=8192
+[[ -d "${HOME}/Android/Sdk/" ]] && export ANDROID_HOME="${HOME}/Android/Sdk/"
 
-export EDITOR="/usr/bin/nvim"
-export VISUAL="/usr/bin/nvim"
+export HISTFILE=${ZSH_CONFIG_HOME:-"${HOME}/.cache/histfile"}/.histfile
+export HISTSIZE=20000
+export SAVEHIST=20000
+
+if [[ -x /usr/bin/nvim ]] {
+    export EDITOR="/usr/bin/nvim"
+    export VISUAL="/usr/bin/nvim"
+}
