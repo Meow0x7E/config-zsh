@@ -1,5 +1,7 @@
-typeset -g ZSH_CONFIG_HOME=${ZSH_CONFIG_HOME:-${HOME}/.config/zsh}
-source ${ZSH_CONFIG_HOME}/init.zsh
+#!/usr/bin/zsh
+
+typeset -gr ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-${HOME}/.config/zsh}"
+source "${ZSH_CONFIG_HOME}/init.zsh"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

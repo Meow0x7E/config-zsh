@@ -1,10 +1,19 @@
-export PATH="${PATH}:${HOME}/.cargo/bin/"
+#!/usr/bin/zsh
 
-export ANDROID_HOME="${HOME}/Android/Sdk/"
+export HISTFILE=${ZSH_CONFIG_HOME:-"${HOME}/.cache/histfile"}/.histfile
+# 回头用 cmd-wrapped 能看见更多命令的统计
+export HISTSIZE=20000
+export SAVEHIST=20000
 
-export HISTFILE=${ZSH_CONFIG_HOME}/.histfile
-export HISTSIZE=8192
-export SAVEHIST=8192
+if [[ '${HOME}/.cargo/bin/' ]] {
+    export PATH="${PATH}:${HOME}/.cargo/bin/"
+}
 
-export EDITOR="/usr/bin/nvim"
-export VISUAL="/usr/bin/nvim"
+if [[ -d '${HOME}/Android/Sdk/' ]] {
+    export ANDROID_HOME="${HOME}/Android/Sdk/"
+}
+
+if [[ -x '/usr/bin/nvim' ]] {
+    export EDITOR='/usr/bin/nvim'
+    export VISUAL='/usr/bin/nvim'
+}
