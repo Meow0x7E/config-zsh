@@ -1,19 +1,19 @@
 #!/usr/bin/zsh
 
-export HISTFILE=${ZSH_CONFIG_HOME:-"${HOME}/.cache/histfile"}/.histfile
+typeset -x HISTFILE=${HOME}/.cache/zsh-histfile
 # 回头用 cmd-wrapped 能看见更多命令的统计
-export HISTSIZE=20000
-export SAVEHIST=20000
+typeset -x HISTSIZE=65535
+typeset -x SAVEHIST=65535
 
 if [[ '${HOME}/.cargo/bin/' ]] {
-    export PATH="${PATH}:${HOME}/.cargo/bin/"
+    typeset -x PATH="${PATH}:${HOME}/.cargo/bin/"
 }
 
 if [[ -d '${HOME}/Android/Sdk/' ]] {
-    export ANDROID_HOME="${HOME}/Android/Sdk/"
+    typeset -x ANDROID_HOME="${HOME}/Android/Sdk/"
 }
 
 if [[ -x '/usr/bin/nvim' ]] {
-    export EDITOR='/usr/bin/nvim'
-    export VISUAL='/usr/bin/nvim'
+    typeset -x EDITOR='/usr/bin/nvim'
+    typeset -x VISUAL='/usr/bin/nvim'
 }
