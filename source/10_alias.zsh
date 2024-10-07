@@ -21,13 +21,13 @@
 
     )
 
-    if { which eza } {
+    if { 1>&- which eza } {
         alias 'ls'="eza ${EZA_OPTIONS}"
         alias 'll'="eza ${EZA_OPTIONS} -l"
         alias 'la'="eza ${EZA_OPTIONS} -a"
         alias 'all'="eza ${EZA_OPTIONS} -al"
         alias 'All'="eza ${EZA_OPTIONS} -aal"
-    } elif { which ls } {
+    } elif { 1>&- which ls } {
         alias 'ls'="ls ${LS_OPTIONS}"
         alias 'll'="ls ${LS_OPTIONS} -l"
         alias 'la'="ls ${LS_OPTIONS} -A"
@@ -36,7 +36,7 @@
     }
 }
 
-if { which tree } {
+if { 1>&- which tree } {
     typeset -a OPTIONS=(
         '-h'
         '--du'
@@ -50,19 +50,19 @@ if { which tree } {
 }
 
 # replace cd
-if { which zoxide } {
+if { 1>&- which zoxide } {
     eval "$(zoxide init --cmd cd zsh)"
 }
 
-if { which sudo } {
+if { 1>&- which sudo } {
     alias 'sudo'='sudo '
 }
 
-if { which nvim } {
+if { 1>&- which nvim } {
     alias 'vi'='nvim '
 }
 
 # 事实上我很少会误输入这个，我会在按回车前发现自己的 ls 反了，而且我更习惯使用 all
-if { which sl } {
+if { 1>&- which sl } {
     alias 'sl'='sl -ce3'
 }

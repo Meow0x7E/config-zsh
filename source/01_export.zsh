@@ -13,7 +13,7 @@ if [[ -d "${HOME}/Android/Sdk" ]] {
     typeset -x ANDROID_HOME="${HOME}/Android/Sdk"
 }
 
-if { which nvim 1>&- } {
+if { 1>&- which nvim } {
     typeset -a findList=(${(f)"$(which -a nvim)"})
 
     for p ($findList) {
