@@ -21,39 +21,48 @@
 
     )
 
-    if [[ -x '/usr/bin/eza' ]] {
-        alias 'ls'="/usr/bin/eza ${EZA_OPTIONS}"
-        alias 'll'="/usr/bin/eza ${EZA_OPTIONS} -l"
-        alias 'la'="/usr/bin/eza ${EZA_OPTIONS} -a"
-        alias 'all'="/usr/bin/eza ${EZA_OPTIONS} -al"
-        alias 'All'="/usr/bin/eza ${EZA_OPTIONS} -aal"
-    } elif [[ -x "/usr/bin/ls" ]] {
-        alias 'ls'="/usr/bin/ls ${LS_OPTIONS}"
-        alias 'll'="/usr/bin/ls ${LS_OPTIONS} -l"
-        alias 'la'="/usr/bin/ls ${LS_OPTIONS} -A"
-        alias 'all'="/usr/bin/ls ${LS_OPTIONS} -Al"
-        alias 'All'="/usr/bin/ls ${LS_OPTIONS} -al"
+    if { which eza } {
+        alias 'ls'="eza ${EZA_OPTIONS}"
+        alias 'll'="eza ${EZA_OPTIONS} -l"
+        alias 'la'="eza ${EZA_OPTIONS} -a"
+        alias 'all'="eza ${EZA_OPTIONS} -al"
+        alias 'All'="eza ${EZA_OPTIONS} -aal"
+    } elif { which ls } {
+        alias 'ls'="ls ${LS_OPTIONS}"
+        alias 'll'="ls ${LS_OPTIONS} -l"
+        alias 'la'="ls ${LS_OPTIONS} -A"
+        alias 'all'="ls ${LS_OPTIONS} -Al"
+        alias 'All'="ls ${LS_OPTIONS} -al"
     }
 }
 
-if [[ -x '/usr/bin/tree' ]] {
-    alias 'tree'='tree -h --du --dirsfirst --sort name -A -C'
+if { which tree } {
+    typeset -a OPTIONS=(
+        '-h'
+        '--du'
+        '--dirsfirst'
+        '--sort=name'
+        '-A'
+        '-C'
+    )
+
+    alias 'tree'="tree ${OPTIONS}"
 }
 
 # replace cd
-if [[ -x '/bin/zoxide' ]] {
+if { which zoxide } {
     eval "$(zoxide init --cmd cd zsh)"
 }
 
-if [[ -x '/usr/bin/sudo' ]] {
-    alias 'sudo'='/usr/bin/sudo '
+if { which sudo } {
+    alias 'sudo'='sudo '
 }
 
-if [[ -x '/usr/bin/nvim' ]] {
-    alias 'vi'='/usr/bin/nvim '
+if { which nvim } {
+    alias 'vi'='nvim '
 }
 
 # 事实上我很少会误输入这个，我会在按回车前发现自己的 ls 反了，而且我更习惯使用 all
-if [[ -x '/usr/bin/sl' ]] {
+if { which sl } {
     alias 'sl'='sl -ce3'
 }

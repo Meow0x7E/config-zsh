@@ -8,7 +8,7 @@ for f (${(f)"$(print -l ${ZSH_CONFIG_HOME}/source/*(.,@))"}) {
 
 source ${ZSH_CONFIG_HOME}/zinit.zsh
 
-if [[ -x '/usr/bin/motd' ]] {
+if { which motd 1>&- } {
     # 如果卡死在这里，可以挂起它，然后 kill % 来结束它
     ( motd )
 }
