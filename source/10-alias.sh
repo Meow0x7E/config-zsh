@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 
-# replace ls
+# 替换 ls 和 tree
 {
     typeset -a LS_OPTIONS=(
         '--color=auto'
@@ -15,10 +15,7 @@
         '--binary' # 列出带二进制前缀的文件大小
         '--group' # 列出每个文件的组
         '--header' # 为每列添加标题行
-        '--blocksize' # 显示已分配文件系统块的大小
-        '--git' # 列出每个文件的 Git 状态(如果已跟踪或已忽略)
-        '--git-repos' # list root of git-tree status
-
+        '--git'
     )
 
     if { 1>&- which eza } {
@@ -27,6 +24,8 @@
         alias 'la'="eza ${EZA_OPTIONS} -a"
         alias 'all'="eza ${EZA_OPTIONS} -al"
         alias 'All'="eza ${EZA_OPTIONS} -aal"
+
+        alias 'tree'="eza ${EZA_OPTIONS} -T"
     } elif { 1>&- which ls } {
         alias 'ls'="ls ${LS_OPTIONS}"
         alias 'll'="ls ${LS_OPTIONS} -l"
@@ -36,7 +35,9 @@
     }
 }
 
-if { 1>&- which tree } {
+# 替换 tree
+# 如果 eza 存在则跳过
+if { ! which eza 1>&- } && { 1>&- which tree } {
     typeset -a OPTIONS=(
         '-h'
         '--du'
@@ -49,7 +50,7 @@ if { 1>&- which tree } {
     alias 'tree'="tree ${OPTIONS}"
 }
 
-# replace cd
+# 替换 cd
 if { 1>&- which zoxide } {
     eval "$(zoxide init --cmd cd zsh)"
 }
