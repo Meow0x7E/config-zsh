@@ -49,3 +49,7 @@ function unicode() {
         cat
     fi | iconv -t UCS-2BE | xxd -p | sed 's/..../\\u&/g'
 }
+
+function get_proc_name() {
+    head -n 1 /proc/$1/status | sed -e 's/Name:\t//'
+}

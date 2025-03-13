@@ -1,6 +1,5 @@
 #!/usr/bin/zsh
 
-
 # 替换 ls 和 tree
 {
     typeset -a LS_OPTIONS=(
