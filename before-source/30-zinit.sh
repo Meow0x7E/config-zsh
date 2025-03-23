@@ -20,9 +20,6 @@ zinit \
         light-mode \
             'zsh-users/zsh-syntax-highlighting' \
         light-mode \
-            atinit'bindkey -v' \
-            'jeffreytse/zsh-vi-mode' \
-        light-mode \
             atload"
                 zstyle ':completion:*:git-checkout:*' sort false
                 zstyle ':completion:*:descriptions' format '[%d]'
