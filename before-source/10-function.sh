@@ -12,7 +12,9 @@ function ssh_key_add() {
         keys+="${file:r}"
     }
 
-    eval "$(ssh-agent)"
+    if [[ -z "$SSH_AUTH_SOCK" || -z "$SSH_AGENT_PID" ]] {
+        eval "$(ssh-agent)"
+    }
 
     while {print -l $keys | fzf --preview="ssh-keygen -lvf {}" | read -r key_file} {
         ssh-add "$key_file"
