@@ -63,4 +63,4 @@ typeset -a OPTIONS=(
 
 setopt $OPTIONS
 
-unset $OPTIONS
+unset OPTIONS
