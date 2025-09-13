@@ -2,15 +2,17 @@
 
 # 没有 eza 时的备选
 if { ! 1>/dev/null which eza } {
-    typeset -a LS_OPTIONS=(
+    local -a ls_options=(
         '--color=auto'
     )
 
-    alias 'ls'="ls ${LS_OPTIONS}"
-    alias 'll'="ls ${LS_OPTIONS} -l"
-    alias 'la'="ls ${LS_OPTIONS} -A"
-    alias 'all'="ls ${LS_OPTIONS} -Al"
-    alias 'All'="ls ${LS_OPTIONS} -al"
+    alias 'ls'="ls ${ls_options}"
+    alias 'll'="ls ${ls_options} -l"
+    alias 'la'="ls ${ls_options} -A"
+    alias 'all'="ls ${ls_options} -Al"
+    alias 'All'="ls ${ls_options} -al"
 
-    unset LS_OPTIONS
+    unset ls_options
 }
+
+# vim:set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:

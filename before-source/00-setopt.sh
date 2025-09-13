@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-typeset -a OPTIONS=(
+typeset -a zsh_options=(
     # 如果发出的命令无法作为正常命令执行，并且该命令是目录的名称，则执行对该目录的cd命令。此选项仅在设置了SHIN_STDIN选项时适用，即当从标准输入读取命令时。该选项专为交互式使用而设计；建议在脚本中明确使用cd以避免歧义。
     'AUTO_CD'
     # 使cd命令将旧目录推送到目录堆栈上。
@@ -61,6 +61,8 @@ typeset -a OPTIONS=(
     'HUP'
 )
 
-setopt $OPTIONS
+setopt $zsh_options
 
-unset OPTIONS
+unset zsh_options
+
+# vim:set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:

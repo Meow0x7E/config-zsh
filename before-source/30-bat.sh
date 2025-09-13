@@ -1,11 +1,13 @@
 #!/usr/bin/zsh
 
-if { 1>&- which bat } {
-    typeset -a BAT_OPTIONS=(
+if { 1>/dev/null which bat } {
+    local -a bat_options=(
         --nonprintable-notation unicode
     )
 
-    alias 'cat'="bat ${BAT_OPTIONS}"
+    alias cat="bat ${bat_options}"
 
-    unset BAT_OPTIONS
+    unset bat_options
 }
+
+# vim:set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:
