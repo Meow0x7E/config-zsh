@@ -13,4 +13,6 @@ find "${ZSH_CONFIG_HOME}/after-source" -type f -name "*.sh" | sort -n | while {r
   source $file
 }
 
+(fastfetch --pipe 0 | slow-scan-print -d 16ms -l -i)
+
 # vim:set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:
