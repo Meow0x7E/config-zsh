@@ -1,10 +1,10 @@
 #!/usr/bin/zsh
 
-if [[
-  "$(get-proc-name $PPID)" == "tmux: server" &&
-  "$(tmux display-message -p '#S')" == waydroid &&
-  "$(waydroid status | grep -i -E '^Session:\s.+$' | cut -f 2)" == "STOPPED"
-]] {
+function start-waydroid() {
+  # 检查必要依赖是否可用
+  _which tmux || return 1
+  _which waydroid || return 1
+
   local waydroid_storage="${HOME}/.local/share/waydroid/data/media/0"
 
   local -A location_map=(
@@ -71,8 +71,6 @@ if [[
   wait $pid
   # 清理已绑定的目录
   _clean_mount
-
-  exit 0
 }
 
 # vim:set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:
