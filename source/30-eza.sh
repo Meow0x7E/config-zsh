@@ -6,6 +6,7 @@ if { 1>/dev/null which eza } {
     '--color-scale=size'
     '--color-scale-mode=gradient'
     '--icons=auto'
+    '--sort=type'
     '--binary' # 列出带二进制前缀的文件大小
     '--group'  # 列出每个文件的组
     '--header' # 为每列添加标题行
