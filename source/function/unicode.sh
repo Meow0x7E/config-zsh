@@ -22,10 +22,11 @@
 function unicode() {
   # 判断是否有参数传入，有则处理参数，无则处理标准输入
   if [[ -n "$1" ]]; then
-    echo -n "$1" # 输出参数内容(不换行)
+    builtin printf "$1" # 输出参数内容(不换行)
   else
-    cat                      # 从标准输入读取内容
-  fi | iconv -t UCS-2BE |    # 转换为 UCS-2BE 编码(大端序)
-    xxd -p |                 # 以纯十六进制格式输出
-    sed -e 's/..../\\u\U&/g' # 每4个字符前添加\u并转换为大写
+    command cat
+  fi |
+    command iconv -t UCS-2BE |       # 转换为 UCS-2BE 编码(大端序)
+    command xxd -p |                 # 以纯十六进制格式输出
+    command sed -e 's/..../\\u\U&/g' # 每4个字符前添加\u并转换为大写
 }

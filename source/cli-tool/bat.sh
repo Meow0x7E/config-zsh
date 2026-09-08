@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 if { 1>/dev/null which bat } {
-    local -a bat_options=(
+    typeset -a bat_options=(
         --nonprintable-notation unicode
     )
 

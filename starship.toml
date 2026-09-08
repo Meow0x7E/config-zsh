@@ -1,0 +1,129 @@
+# NOTE: Force Require `Nerd Font`
+# NOTE: Force Require `Nerd Font`
+# NOTE: Force Require `Nerd Font`
+# Get editor completions based on the config schema
+"$schema" = "https://starship.rs/config-schema.json"
+format = '''
+$os$directory( $vcs)
+$sudo$status$character
+'''
+right_format = "($cmd_duration )($rust)(with ($username@)$hostname )(at $time)"
+add_newline = false
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+vimcmd_replace_symbol = "[❮](purple)"
+vimcmd_visual_symbol = "[❮](yellow)"
+
+[cmd_duration]
+format = "took [$duration]($style)"
+show_milliseconds = true
+show_notifications = true
+min_time_to_notify = 60000
+notification_timeout = 5000
+
+[directory]
+format = "[$read_only]($read_only_style)[$path]($style)"
+style = "blue"
+# U+F023 nf-fa-lock
+read_only = " "
+read_only_style = "yellow"
+home_symbol = " ~"  # U+EB06 nf-cod-home
+
+[git_branch]
+symbol = " "  # U+F418 nf-oct-git_branch
+
+[git_commit]
+tag_symbol = " "
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "⮀$count "
+ahead = "⭡$count "
+behind = "⭣$count "
+diverged = "⮁$count "
+untracked = "[?$count ](bold blue)"
+stashed = "\\$$count "
+modified = "[!$count ](bold yellow)"
+staged = "[+$count ](bold yellow)"
+renamed = "[>$count ](bold yellow)"
+deleted = "[-$count ](bold red)"
+
+[hostname]
+format = "[$hostname[$ssh_symbol](yellow)]($style)"
+ssh_symbol = "󰣀 "  # U+F08C0 nf-md-ssh
+
+[os]
+disabled = false
+
+[os.symbols]
+AlmaLinux = " "  # U+F31D  nf-linux-almalinux
+Alpine = " "  # U+F300  nf-linux-alpine
+Amazon = " "  # U+E7AD  nf-dev-aws
+Android = " "  # U+E70E  nf-dev-android
+AOSC = " "  # U+F301  nf-linux-aosc
+Arch = " "  # U+F303  nf-linux-archlinux
+Artix = " "  # U+F31F  nf-linux-artix
+CentOS = " "  # U+F304  nf-linux-centos
+Debian = " "  # U+F306  nf-linux-debian
+Elementary = ""  # U+F309  nf-linux-elementary
+EndeavourOS = " "  # U+F322  nf-linux-endeavour
+Fedora = " "  # U+F30A  nf-linux-fedora
+FreeBSD = " "  # U+F30C  nf-linux-freebsd
+Garuda = " "  # U+F337  nf-linux-garuda
+Gentoo = " "  # U+F30D  nf-linux-gentoo
+Illumos = " "  # U+F326  nf-linux-illumos
+Ios = "󰀷 "  # U+F0037 nf-md-apple_ios
+Kali = " "  # U+F327  nf-linux-kali_linux
+Linux = " "  # U+F31A  nf-linux-tux
+Manjaro = " "  # U+F312  nf-linux-manjaro
+Mint = "󰣭 "  # U+F08ED nf-md-linux_mint
+NixOS = " "  # U+F313  nf-linux-nixos
+Nobara = " "  # U+F380  nf-linux-nobara
+OpenBSD = " "  # U+F328  nf-linux-openbsd
+openSUSE = " "  # U+EF6D  nf-fa-suse
+OracleLinux = " "  # U+E859  nf-dev-oracle
+Pop = " "  # U+F32A  nf-linux-pop_os
+Raspbian = " "  # U+F315  nf-linux-raspberry_pi
+Redhat = " "  # U+F316  nf-linux-redhat
+RedHatEnterprise = " "  # U+F316  nf-linux-redhat
+RockyLinux = " "  # U+F32B  nf-linux-rocky_linux
+Solus = " "  # U+F32D  nf-linux-solus
+SUSE = " "  # U+EF6D  nf-fa-suse
+Ubuntu = " "  # U+F31B  nf-linux-ubuntu
+Void = " "  # U+F32E  nf-linux-void
+Windows = " "  # U+E62A  nf-custom-windows
+Zorin = " "  # U+F32F  nf-linux-zorin
+
+[rust]
+symbol = "󱘗 "  # U+F1617 nf-md-language_rust
+
+[status]
+format = "[$symbol($common_meaning )$status]($style)"
+symbol = " "  # U+F52F nf-oct-x_circle
+success_symbol = " "  # U+F49E nf-oct-check_circle
+not_executable_symbol = " "  # U+F4D6 nf-oct-file_removed
+not_found_symbol = " "  # U+F420 nf-oct-question
+sigint_symbol = " "  # U+F4F4 nf-oct-no_entry
+signal_symbol = " "  # U+F4F4 nf-oct-no_entry
+success_style = "green"
+failure_style = "red"
+map_symbol = true
+disabled = false
+
+[sudo]
+format = "[$symbol]($style)"  # U+F0E7 nf-md-flash
+symbol = " "
+style = "blue"
+disabled = false
+
+[time]
+format = "[ $time]($style)"  # U+F017 nf-fa-clock
+disabled = false
+
+[username]
+style_root = "red"
+style_user = "yellow"
+format = "[$user]($style)"

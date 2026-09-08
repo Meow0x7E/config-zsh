@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+#
+# =============================================================================
+# color — ANSI 转义序列替换工具（流式处理） Bash 版本
+# =============================================================================
+# 功能：
+#   将输入字符串中的 %{keyword} 或 %{fg_keyword} 占位符替换为对应的 ANSI 转义序列。
+#   支持逗号分隔多个关键字或数字代码（如 %{bold,31} → \e[1;31m）。
+#   支持反斜杠转义（\%{red} 原样输出 %{red}）。
+#   流式逐字符处理，避免超大单行文本的阻塞。
+#
+# 使用方式：
+#   color "Hello %{bold,red}World%{reset}"
+#   color "%{green}" "部分文本" "%{underline}更多%{}"
+#
+# 扩展性：
+#   颜色/样式映射表 _color_map 可自由增删，解析逻辑自动适应。
+#   若需新增关键字，只需在映射表中添加条目。
+# =============================================================================
+
+# 启用严格模式：遇到错误退出，使用未定义变量报错，管道错误退出
+set -euo pipefail
+
+# 定义颜色/样式关键字到 ANSI 数字代码的映射表（需要 bash 4.0+）
+declare -A _color_map=(
+  # 样式
+  [reset]="0"
+  [bold]="1"
+  [dim]="2"
+  [italic]="3"
+  [underline]="4"
+  [blink]="5"
+  [reverse]="7"
+  [conceal]="8"
+
+  # 标准前景色
+  [black]="30"
+  [red]="31"
+  [green]="32"
+  [yellow]="33"
+  [blue]="34"
+  [magenta]="35"
+  [cyan]="36"
+  [white]="37"
+  [default]="39"
+
+  # 带 fg_ 前缀的前景色（与上述相同）
+  [fg_black]="30"
+  [fg_red]="31"
+  [fg_green]="32"
+  [fg_yellow]="33"
+  [fg_blue]="34"
+  [fg_magenta]="35"
+  [fg_cyan]="36"
+  [fg_white]="37"
+  [fg_default]="39"
+
+  # 背景色
+  [bg_black]="40"
+  [bg_red]="41"
+  [bg_green]="42"
+  [bg_yellow]="43"
+  [bg_blue]="44"
+  [bg_magenta]="45"
+  [bg_cyan]="46"
+  [bg_white]="47"
+  [bg_default]="49"
+)
+
+# ------------------------------ 辅助函数 -------------------------------------
+# 解析占位符内容并输出对应的 ANSI 转义序列
+# 参数：$1 - 占位符内部字符串（如 "bold,31"）
+# 全局依赖：_color_map 关联数组
+_color_parse_placeholder() {
+  local buf="$1"
+  local -a parts codes=()
+  local part
+
+  # 按逗号分割字符串
+  IFS=',' read -ra parts <<<"$buf"
+
+  for part in "${parts[@]}"; do
+    # 去除前后空白（使用参数扩展，不需外部工具）
+    # 去除前导空格
+    part="${part#"${part%%[![:space:]]*}"}"
+    # 去除尾随空格
+    part="${part%"${part##*[![:space:]]}"}"
+    [[ -z "$part" ]] && continue
+
+    # 判断是否为纯数字（正则匹配）
+    if [[ "$part" =~ ^[0-9]+$ ]]; then
+      codes+=("$part")
+    elif [[ -n "${_color_map[$part]:-}" ]]; then
+      # 关键字映射到数字
+      codes+=("${_color_map[$part]}")
+    fi
+    # 忽略未知关键字
+  done
+
+  # 如果至少有一个有效代码，输出 ANSI 转义序列
+  if (("$(tput colors 2>/dev/null || echo 0)" > 0 && ${#codes[@]} > 0)); then
+    # 用分号连接所有代码
+    local IFS=';'
+    printf '\033[%sm' "${codes[*]}"
+  fi
+  # 无有效代码时输出空字符串（直接删除占位符）
+}
+
+# ------------------------------ 主逻辑 ---------------------------------------
+# 状态机变量
+state="normal" # 当前模式：normal 或 buffer
+buf=""         # 占位符缓冲内容
+
+i=0
+len=0
+ch=""
+
+# 遍历所有参数
+for arg in "$@"; do
+  # 如果参数为空，直接跳过（不输出任何内容）
+  [[ -z "$arg" ]] && continue
+
+  # 如果参数的第一个字符不是 '%'，则整个参数原样输出，不进行任何解析
+  # （这是一种性能优化：避免逐字符处理纯文本参数）
+  #if [[ "${arg:0:1}" != '%' ]]; then
+  #  printf "%s" "$arg"
+  #  continue
+  #fi
+
+  # 否则，对该参数进行逐字符流式处理（索引从 0 开始）
+  i=0
+  len="${#arg}"
+  while ((i < len)); do
+    ch="${arg:i:1}"
+    case $state in
+    normal)
+      # 处理反斜杠转义
+      # shellcheck disable=SC1003
+      if [[ "$ch" == '\' ]] && ((i + 1 < len)); then
+        if [[ "${arg:i+1:1}" == '%' ]]; then
+          # 输出被转义的 %（反斜杠本身不输出，只输出 % 符号）
+          printf '%%'
+        else
+          # 使用 printf 转义该字符
+          printf "%b" "\\${arg:i+1:1}"
+        fi
+        # 跳过反斜杠和被转义字符
+        ((i += 2))
+      # 检查是否进入占位符：当前字符是 % 且下一个字符是 {
+      elif [[ "$ch" == '%' ]] && ((i + 1 < len)) && [[ "${arg:i+1:1}" == '{' ]]; then
+        # 进入缓冲模式，清空缓冲区
+        state="buffer"
+        buf=""
+        # 跳过 %{
+        ((i += 2))
+      else
+        # 普通字符直接输出
+        printf "%s" "$ch"
+        ((i++)) || :
+      fi
+      ;;
+    buffer)
+      if [[ "$ch" == '}' ]]; then
+        # 遇到 }，结束缓冲，解析缓冲区内容并输出对应的 ANSI 序列
+        _color_parse_placeholder "$buf"
+        # 恢复普通模式，跳过 }
+        state="normal"
+        ((i++))
+      else
+        # 收集占位符内容
+        buf+="$ch"
+        ((i++))
+      fi
+      ;;
+    esac
+  done
+done
+
+# 循环结束后，如果仍处于缓冲模式，说明占位符未闭合（例如 "%{red"）
+# 按照常见处理，应原样输出 "%{" 和已缓冲的内容
+if [[ "$state" == "buffer" ]]; then
+  printf "%%{%s" "$buf"
+  # 状态恢复为 normal（虽然函数即将结束，但保持良好习惯）
+  state="normal"
+fi
+
+# 脚本不自动添加换行符，以便用户可以自由控制

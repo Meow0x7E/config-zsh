@@ -2,7 +2,7 @@
 
 # 没有 eza 时的备选
 if { ! 1>/dev/null which eza } {
-    local -a ls_options=(
+    typeset -a ls_options=(
         '--color=auto'
     )
 

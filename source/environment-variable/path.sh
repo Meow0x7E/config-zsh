@@ -8,3 +8,7 @@ if [[ -d "${HOME}/.cargo/bin" ]] {
 if [[ -d "${HOME}/.local/bin" ]] {
   typeset -x PATH="${PATH}:${HOME}/.local/bin"
 }
+
+if [[ -d "${ZSH_CONFIG_HOME}/bin" ]] {
+  typeset -x PATH="${PATH}:${ZSH_CONFIG_HOME}/bin"
+}

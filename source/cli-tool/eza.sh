@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 if { 1>/dev/null which eza } {
-  local -a eza_options=(
+  typeset -a eza_options=(
     # ========== 显示选项 ==========
 
     # 有效设置包括“always”（始终）、“automatic”（自动，可简写为“auto”）和“never”（从不）。
@@ -78,11 +78,11 @@ if { 1>/dev/null which eza } {
     #   ‘I’ 表示被忽略
     #   ‘U’ 表示存在冲突
     # 目录将显示其内容的 Git 状态，这就是为什么目录可能显示“删除”状态——如果目录包含具有某种状态的文件，它将显示该状态。
-    --git
+    #--git
     # 如果目录被跟踪，列出每个目录的 Git 状态。显示的符号：|= 表示干净，+= 表示有修改，~= 表示未知。
-    --git-repos
+    #--git-repos
     # 列出目录是否为 Git 仓库，但不显示其状态。所有 Git 仓库目录将显示为（主题样式）“-”，不指示状态。
-    --git-repos-no-status
+    #--git-repos-no-status
   )
 
   alias ls="eza ${eza_options}"
