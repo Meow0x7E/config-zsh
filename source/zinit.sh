@@ -12,7 +12,7 @@ zinit light 'romkatv/powerlevel10k'
 # vim 按键模式
 zinit wait lucid for \
   atinit'bindkey -v' \
-    'jeffreytse/zsh-vi-mode' 
+    'jeffreytse/zsh-vi-mode'
 
 # fzf 补全列表
 zinit wait lucid for \
@@ -25,7 +25,7 @@ zinit wait lucid for \
   ' \
   'Aloxaf/fzf-tab'
 
-# 命令高亮提示与自动补全
+# 命令高亮提示与命令自动建议
 zinit wait lucid for \
   atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \

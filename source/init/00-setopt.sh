@@ -1,5 +1,3 @@
-#!/usr/bin/zsh
-
 typeset -a zsh_options=(
   # NOTE: Changing Directories
 

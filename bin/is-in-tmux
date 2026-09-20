@@ -1,0 +1,20 @@
+#!/usr/bin/zsh
+
+zmodload zsh/regex
+
+typeset pid=$$
+typeset data
+
+while ((pid > 1)); do
+  [[ -r "/proc/$pid/status" ]] || exit 1
+  data="$(</proc/$pid/status)"
+
+  if [[ "$data" =~ $'Name:[[:space:]]+(tmux(: (client|server))?)\n' ]]; then
+    exit 0
+  fi
+
+  [[ "$data" =~ $'\nPPid:[[:space:]]+([0-9]+)' ]] || exit 1
+  pid="${match[1]}"
+done
+
+exit 1
