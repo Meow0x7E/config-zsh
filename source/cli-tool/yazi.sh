@@ -1,6 +1,4 @@
-#!/usr/bin/zsh
-
-if { 1>/dev/null which yazi } {
+if command -v yazi 1>/dev/null; then
   function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
     yazi "$@" --cwd-file="$tmp"
@@ -9,4 +7,4 @@ if { 1>/dev/null which yazi } {
     fi
     rm -f -- "$tmp"
   }
-}
+fi

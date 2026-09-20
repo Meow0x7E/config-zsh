@@ -1,44 +1,42 @@
 #!/usr/bin/zsh
 
-function _tmux() {
-  if { ! command -v tmux 1>/dev/null } {
-    return 0
-  }
+zmodload -a zsh/regex
 
-  if [[ "$(tty)" =~ ^/dev/tty[0-9]+$ ]] {
-    return 0
-  }
+# 不是交互式 Shell 直接返回
+[[ ! -o interactive ]] && return 0
 
-  if [[ -n "$TMUX" ]] {
-    return 0
-  }
+function _in_tmux() {
+  local pid=$$ data name
 
-  if [[ -n "$TERMUX_VERSION" ]] {
-    return 0
-  }
+  while ((pid > 1)); do
+    [[ -r "/proc/$pid/status" ]] || return 1
+    data="$(</proc/${pid}/status)"
 
-  if [[ -n "$SSH_CONNECTION" ]] {
-    exec tmux new-session -A -c "$HOME" -s "terminal" -t "terminal"
-  } else {
-    tmux new-session -A -c "$HOME" -s "terminal" -t "terminal"
-  }
+    if [[ "$data" =~ $'\nName:[[:space:]]+(tmux(: (client|server))?)\n' ]]; then
+      return 0
+    fi
+
+    [[ "$data" =~ $'\nPPid:[[:space:]]+([0-9]+)' ]] || return 1
+    pid="${match[1]}"
+  done
+
+  return 1
 }
 
-function _motd() {
-  typeset -a fastfetch_options=(--pipe 0)
-  typeset cols="$(tput cols)" # 获取当前终端列数
+if command -v tmux 1>/dev/null && [[ -z "$TERMUX_VERSION" ]] && ! _in_tmux; then
+  if [[ -n "$SSH_CONNECTION" ]]; then
+    exec tmux new-session -A -c "$HOME" -s "terminal"
+  else
+    tmux new-session -A -c "$HOME" -s "terminal"
+  fi
+fi
 
-  # 若终端宽度 ≤ 90 列，则将 logo 置于顶部，以节省横向空间
-  if [[ -n "$cols" ]] && (( cols <= 90 )) {
-    fastfetch_options+=(--logo-position top)
-  }
+if command -v fastfetch 1>/dev/null && _in_tmux; then
+  if ((${COLUMNS:-80} <= 80)); then
+    fastfetch --logo-position top
+  else
+    fastfetch
+  fi
+fi
 
-  #( fastfetch $fastfetch_options | slow-scan-print -d 16ms -l -i ) &
-  (fastfetch $fastfetch_options)
-  unset fastfetch_options cols
-}
-
-_tmux
-_motd
-
-unfunction _tmux _motd
+unset -f _in_tmux

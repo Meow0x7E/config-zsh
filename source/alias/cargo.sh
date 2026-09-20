@@ -1,5 +1,5 @@
 #!/usr/bin/zsh
 
-if { 1>/dev/null which cargo } {
+if { command -v cargo 1>/dev/null } {
   alias catgo='cargo '
 }

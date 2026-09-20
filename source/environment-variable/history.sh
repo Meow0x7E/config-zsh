@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/bash
 
 # 历史记录相关设置
 typeset -x HISTFILE=${XDG_DATA_HOME:-${HOME}/.local/share}/zsh-histfile

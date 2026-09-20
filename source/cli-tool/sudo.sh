@@ -1,6 +1,3 @@
-#!/usr/bin/zsh
-
-if { 1>/dev/null which sudo } {
+if command -v sudo 1>/dev/null; then
   alias 'sudo'='sudo '
-  alias 'esudo'='sudo -E '
-}
+fi

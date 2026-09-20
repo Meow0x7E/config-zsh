@@ -18,7 +18,7 @@
 #   gif-gen input.mp4          # 将 input.mp4 转换为 input.gif
 #   gif-gen video.mov -t 10    # 转换前10秒的视频
 function gif-gen() {
-  _which ffmpeg
+  command -v ffmpeg 1>/dev/null || return 1
 
   local input="$1"                # 存储输入文件路径
   local output="${1:r}.gif"      # 生成输出文件名(替换扩展名为.gif)

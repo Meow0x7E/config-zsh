@@ -18,7 +18,7 @@
 #   hdr-to-sdr-video-play ./input.mkv -fs  # 全屏播放
 function hdr-to-sdr-video-play() {
   # 检查 ffplay 是否可用
-  _which ffplay || return 1
+  command -v ffplay 1>/dev/null || return 1
 
   local file="$1"  # 存储要播放的视频文件路径
   shift            # 从参数列表中移除第一个参数(文件路径)

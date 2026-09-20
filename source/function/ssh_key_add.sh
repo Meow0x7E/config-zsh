@@ -21,10 +21,10 @@
 #   1: 缺少必要依赖(fzf 或 ssh-agent)
 function ssh_key_add() {
   # 检查必要依赖是否可用
-  _which fzf || return 1
-  _which ssh-agent || return 1
-  _which ssh-keygen || return 1
-  _which ssh-add || return 1
+  command -v fzf || return 1
+  command -v ssh-agent || return 1
+  command -v ssh-keygen || return 1
+  command -v ssh-add || return 1
 
   local -a keys=()  # 声明数组存储私钥路径
 

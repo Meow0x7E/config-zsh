@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-if { 1>/dev/null which nvim } {
+if { command -v nvim 1>/dev/null } {
     alias 'v'='nvim '
     alias 'vi'='nvim '
 }

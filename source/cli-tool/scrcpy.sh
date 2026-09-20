@@ -1,5 +1,3 @@
-#!/usr/bin/bash
-
 if command -v scrcpy 1>/dev/null; then
   function scrcpy-control() {
     local -a scrcpy_options=(
