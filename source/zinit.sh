@@ -13,7 +13,7 @@ zinit if'! command -v starship 1>/dev/null' for 'romkatv/powerlevel10k'
 zinit wait'0a' lucid for \
 	blockf \
 	'zsh-users/zsh-completions'
-zinit wait'0b' lucid for \
+zinit depth'1' wait'0b' lucid for \
 	atinit'ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
 	'zdharma-continuum/null'
 
