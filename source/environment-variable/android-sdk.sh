@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/zsh
 
 # 设置 Android SDK
-if [[ -d "${HOME}/Android/Sdk" ]]; then
-  typeset -x ANDROID_HOME="${HOME}/Android/Sdk"
-fi
+if [[ -d "${HOME}/Android/Sdk" ]] {
+	typeset -gx ANDROID_HOME="${HOME}/Android/Sdk"
+}

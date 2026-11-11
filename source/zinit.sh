@@ -7,18 +7,38 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # PowerLevel10K 主题
 # 仅在 starship 未安装时加载
-zinit if'! command -v starship 1>/dev/null' for 'romkatv/powerlevel10k'
+zinit if'! command -v starship 1>/dev/null' depth=1 for 'romkatv/powerlevel10k'
 
 # 额外补全定义
-zinit wait'0a' lucid for \
-	blockf \
-	'zsh-users/zsh-completions'
-zinit depth'1' wait'0b' lucid for \
+zinit blockf depth=1 for 'zsh-users/zsh-completions'
+
+# vim 按键模式
+zinit depth=1 for \
+	atinit'
+    typeset -g ZVM_INIT_MODE=sourcing
+    typeset -g ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+  ' \
+	atload'
+    typeset -g ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+  ' \
+	'jeffreytse/zsh-vi-mode'
+
+# fzf 历史查找
+zinit wait lucid has'fzf' depth=1 for \
+	atload'
+    typeset -g ZSH_HISTORY_FUZZY_SEARCH_SHOW_DATES=1
+    typeset -g ZSH_HISTORY_FUZZY_SEARCH_SHOW_EVENT_NUMBERS=1
+    typeset -g ZSH_HISTORY_FUZZY_SEARCH_REMOVE_DUPLICATES=1
+  ' \
+	'MamoruDS/zsh-history-fuzzy-search'
+
+# 初始化额外补全定义
+zinit wait'0a' lucid depth=1 for \
 	atinit'ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
 	'zdharma-continuum/null'
 
 # fzf 补全选择菜单
-zinit wait'0c' lucid has'fzf' for \
+zinit wait'0b' lucid has'fzf' depth=1 for \
 	atload'
     zstyle ":completion:*:git-checkout:*" sort false
     zstyle ":completion:*:descriptions" format "[%d]"
@@ -29,7 +49,7 @@ zinit wait'0c' lucid has'fzf' for \
 	'Aloxaf/fzf-tab'
 
 # 语法高亮
-zinit wait'1a' lucid for \
+zinit wait'0c' lucid depth=1 for \
 	atload'
     # 通知 MamoruDS/zsh-history-fuzzy-search 可以使用 fsh 进行高亮渲染
     typeset -g ZSH_HISTORY_FUZZY_SEARCH_FSH_PREVIEW=1
@@ -37,7 +57,7 @@ zinit wait'1a' lucid for \
 	'zdharma-continuum/fast-syntax-highlighting'
 
 # 补全建议
-zinit wait'1a' lucid for \
+zinit wait'0c' lucid depth=1 for \
 	atload'!_zsh_autosuggest_start' \
 	atinit'
     typeset -g ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
@@ -45,17 +65,3 @@ zinit wait'1a' lucid for \
     typeset -g ZSH_AUTOSUGGEST_HISTORY_IGNORE="?(#c50,)"
   ' \
 	'zsh-users/zsh-autosuggestions'
-
-# vim 按键模式
-zinit wait'1c' lucid for \
-	atinit'bindkey -v' \
-	'jeffreytse/zsh-vi-mode'
-
-# fzf 历史查找
-zinit wait'1c' lucid has'fzf' for \
-	atload'
-    typeset -g ZSH_HISTORY_FUZZY_SEARCH_SHOW_DATES=1
-    typeset -g ZSH_HISTORY_FUZZY_SEARCH_SHOW_EVENT_NUMBERS=1
-    typeset -g ZSH_HISTORY_FUZZY_SEARCH_REMOVE_DUPLICATES=1
-  ' \
-	'MamoruDS/zsh-history-fuzzy-search'

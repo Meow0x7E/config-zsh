@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+
 typeset -a zsh_options=(
   # NOTE: Changing Directories
 
@@ -54,7 +56,6 @@ typeset -a zsh_options=(
 
   # 使不带参数的 pushd 命令执行 ‘pushd $HOME’ 操作（即切换至用户主目录）。
   #PUSHD_TO_HOME
-
 
   # NOTE: Completion
 

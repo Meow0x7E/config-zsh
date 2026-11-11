@@ -1,4 +1,6 @@
-if command -v scrcpy 1>/dev/null; then
+#!/usr/bin/zsh
+
+if { command -v scrcpy 1>/dev/null; } {
   function scrcpy-control() {
     local -a scrcpy_options=(
       --keyboard=uhid
@@ -18,4 +20,4 @@ if command -v scrcpy 1>/dev/null; then
 
     command scrcpy "${scrcpy_options[@]}"
   }
-fi
+}

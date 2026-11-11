@@ -20,13 +20,12 @@
 #   echo "你好" | unicode    # 输出: \u4F60\u597D
 #   unicode < textfile.txt   # 转换文件内容
 function unicode() {
-  # 判断是否有参数传入，有则处理参数，无则处理标准输入
-  if [[ -n "$1" ]]; then
-    builtin printf "$1" # 输出参数内容(不换行)
-  else
-    command cat
-  fi |
-    command iconv -t UCS-2BE |       # 转换为 UCS-2BE 编码(大端序)
-    command xxd -p |                 # 以纯十六进制格式输出
-    command sed -e 's/..../\\u\U&/g' # 每4个字符前添加\u并转换为大写
+	if [[ -n "$1" ]]; then
+		builtin printf "$1"
+	else
+		command cat
+	fi |
+		command iconv -t UCS-2BE |
+		command xxd -p |
+		command sed -e 's/..../\\u\U&/g'
 }

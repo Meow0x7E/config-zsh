@@ -1,5 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/zsh
 
-if command -v zoxide 1>/dev/null; then
-  eval "$(zoxide init --cmd cd zsh)"
-fi
+if { command -v zoxide 1>/dev/null; } {
+	eval "$(zoxide init --cmd cd zsh)"
+}

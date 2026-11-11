@@ -1,5 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/zsh
 
-if command -v bat 1>/dev/null; then
-  alias cat='bat --nonprintable-notation unicode'
-fi
+if { command -v bat 1>/dev/null; } {
+	alias cat='bat --nonprintable-notation unicode'
+}

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+typeset level="$1"
+shift
+typeset formatter="$1"
+shift
+typeset -a str_array=("$@")
+
+color "[%{green}$(date "+%FT%T%z")%{reset}]"
+
+case "$level" in
+d)
+	color '[%{magenta}DEBUG%{reset}]'
+	str_array=("${str_array[@]/#/"%{magenta}"}")
+	;;
+i)
+	color "[%{bold}INFO%{reset}]"
+	;;
+w)
+	color "[%{yellow}WARN%{reset}]"
+	str_array=("${str_array[@]/#/"%{yellow}"}")
+	;;
+e)
+	color "[%{red}ERROR%{reset}]"
+	str_array=("${str_array[@]/#/"%{red}"}")
+	;;
+*)
+	color "[%{bg_magenta}UNKNOWN%{reset}]"
+	str_array=("${str_array[@]/#/"%{bg_magenta}"}")
+	;;
+esac
+
+# shellcheck disable=SC2059
+if [[ "$level" == "i" ]]; then
+	color "${str_array[@]}"
+else
+	color "${str_array[@]/%/"%{reset}"}"
+fi | xargs -- printf "$(color "$formatter")\n"
